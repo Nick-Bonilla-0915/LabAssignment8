@@ -31,6 +31,91 @@ size_t Size(void* ptr)
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
 {
+	//Checking that indexes aren't equal
+	if(l < r)
+	{
+		//Splitting array in half
+		int mid = (l + r) / 2;
+
+		//Recursion to split down
+		mergeSort(pData, l, mid);
+		mergeSort(pData, mid + 1, r);
+
+		//Code of a Merge Function Below
+
+		//Making Variables
+		int i, j, k;
+		int n1 = mid - l + 1;
+		int n2 = r - mid;
+
+		//Making Temp Arrays Using Alloc Function
+		int *lArray = Alloc(sizeof(int) * n1);
+		int *rArray = Alloc(sizeof(int) * n2);
+
+		//Copying Data into Arrays
+
+		//Left Array
+		for(i = 0; i < n1; i++)
+		{
+			lArray[i] = pData[l + i];
+		}
+
+		//Right Array
+		for(i = 0; i < n2; i++)
+		{
+			rArray[i] = pData[mid + 1 + i];
+		}
+
+		//Setting and Resetting Indexes
+		i = 0; //Index for left array
+		j = 0; //Index for right array
+		k = l; //Index for merged array
+
+		//Comparing Arrays
+		while(i < n1 && j < n2)
+		{
+			//If Left subarray is smaller
+			if(lArray[i] <= rArray[j])
+			{
+				pData[k] = lArray[i];
+				i++;
+			}
+
+			//If Right subarray is smaller
+			else
+			{
+				pData[k] = rArray[j];
+				j++;
+			}
+
+			//Increasing index of merged array
+			k++;
+		}
+
+		//Copying any remaining values in arrays
+		while(i < n1)
+		{
+			pData[k] = lArray[i];
+			i++;
+			k++;
+		}
+
+		while(j < n2)
+		{
+			pData[k] = rArray[i];
+			j++;
+			k++;
+		}
+
+
+		//Using Dealloc Function on Temp Arrays
+		DeAlloc(lArray);
+		DeAlloc(rArray);
+	}
+
+
+
+
 }
 
 // parses input file to an integer array
@@ -69,6 +154,17 @@ void printArray(int pData[], int dataSz)
 {
 	int i, sz = dataSz - 100;
 	printf("\tData:\n\t");
+
+	if(dataSz < 100)
+	{
+		for (i=0;i<dataSz;++i)
+		{
+			printf("%d ",pData[i]);
+		}
+		printf("\n\n");
+		return;
+	}
+
 	for (i=0;i<100;++i)
 	{
 		printf("%d ",pData[i]);
